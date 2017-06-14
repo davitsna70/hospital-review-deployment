@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <title>HospitalReview.co</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'source/images/logo.JPG' %}">
+    <link rel="stylesheet" href="{% static 'maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' %}"/>
+    <link href="http://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet"
+          href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.css">
+    <link rel="stylesheet"
+          href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js">
+    </script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.js">
+    </script>
+    {{ form.media }}
+    <style>
+    .jumbotron {
+        background-color: #37f452; /* Orange */
+        color: #ffffff;
+    }
+    .logo {
+        font-size: 200px;
+    }
+    @media screen and (max-width: 768px) {
+        .col-sm-4 {
+            text-align: center;
+            margin: 25px 0;
+        }
+    }
+    .logo-small {
+        color: #37f452;
+        font-size: 50px;
+    }
+
+    .logo {
+        color: #37f452;
+        font-size: 200px;
+    }
+
+    .thumbnail {
+        padding: 0 0 15px 0;
+        border: none;
+        border-radius: 0;
+    }
+
+    .thumbnail img {
+        width: 100%;
+        height: 100%;
+        margin-bottom: 10px;
+    }
+    </style>
+</head>
+<body>
+    <header>
+     <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'utama:home' %}"><img src="{% static 'source/images/logo.JPG' %}" alt="HR.co" height="30em" width="140em"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{% url 'utama:home' %}">Home</a></li>
+            <li><a href="{% url 'utama:list' %}">Berita Terkini</a></li>
+            {% if request.session.role == 'rumah_sakit' %}
+                <li><a href="{% url 'rumah_sakit:foto_rumah_sakit_list' %}">Foto Rumah Sakit</a></li>
+                <li><a href="{% url 'rumah_sakit:fasilitas_rumah_sakit_list' %}">Fasilitas Rumah Sakit</a></li>
+                <li><a href="{% url 'rumah_sakit:dokter_list' %}">Dokter</a></li>
+{#                <li><a href="{% url 'rumah_sakit:jadwal_dokter_list' %}">Jadwal Dokter</a></li>#}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hubungan Asuransi
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'rumah_sakit:asuransi_validated_list' %}">Asuransi Terkait</a></li>
+                      <li><a href="{% url 'rumah_sakit:asuransi_request_list' %}">Permintaan Hubungan Asuransi</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'utama:pesan_create' %}">Pesan</a></li>
+            {% elif request.session.role == 'pengunjung' %}
+                <li><a href="{% url 'pengunjung:review_list' %}">Review</a></li>
+                <li><a href="{% url 'pengunjung:foto_review_list' %}">Foto Review</a></li>
+                <li><a href="{% url 'utama:pesan_create' %}">Pesan</a></li>
+            {% elif request.session.role == 'asuransi' %}
+                <li><a href="{% url 'asuransi:hubungan_rumah_sakit_asuransi_list' %}">Hubungan dengan Rumah Sakit</a></li>
+                <li><a href="{% url 'utama:pesan_create' %}">Pesan</a></li>
+            {% elif request.session.role == 'administrator' %}
+                <li><a href="{% url 'utama:pesan_list' %}">Pesan</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Review
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'utama:review_request' %}">List Review Request</a></li>
+                      <li><a href="{% url 'utama:review_all' %}">List Review Semua</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hubungan Asuransi
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'utama:hubungan_request' %}">List Hubungan Request</a></li>
+                      <li><a href="{% url 'utama:hubungan_all' %}">List Hubungan Semua</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Pengolahan Akun
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{% url 'rumah_sakit:rumah_sakit_list' %}">Rumah Sakit</a></li>
+                        <li><a href="{% url 'rumah_sakit:foto_rumah_sakit_list' %}">Foto Rumah Sakit</a></li>
+                        <li><a href="{% url 'rumah_sakit:fasilitas_rumah_sakit_list' %}">Fasilitas Rumah Sakit</a></li>
+                        <li><a href="{% url 'rumah_sakit:jenis_fasilitas_list' %}">Jenis Fasilitas</a></li>
+                        <li><a href="{% url 'rumah_sakit:dokter_list' %}">Dokter</a></li>
+                        <li><a href="{% url 'rumah_sakit:spesialis_list' %}">Spesialis</a></li>
+                        <li><a href="{% url 'rumah_sakit:penyakit_list' %}">Penyakit</a></li>
+                        <li><a href="{% url 'rumah_sakit:jadwal_dokter_list' %}">Jadwal Dokter</a></li>
+                        <hr/>
+                      <li><a href="{% url 'asuransi:asuransi_list' %}">Asuransi</a></li>
+                        <li><a href="{% url 'asuransi:hubungan_rumah_sakit_asuransi_list' %}">Hubungan dengan Rumah Sakit</a></li>
+                        <hr/>
+                      <li><a href="{% url 'pengunjung:pengunjung_list' %}">Pengunjung</a></li>
+                        <li><a href="{% url 'pengunjung:review_list' %}">Review</a></li>
+                        <li><a href="{% url 'pengunjung:foto_review_list' %}">Foto Review</a></li>
+                        <hr/>
+                    </ul>
+                </li>
+                <li><a href="{% url 'admin:login' %}">Administrator Page</a></li>
+            {% endif %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% if request.session.username == null %}
+                <li><a href="{% url 'utama:pengunjung_registrasi' %}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="{% url 'utama:login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            {% else %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <img src="{{ request.session.image_url }}" alt="NA" width="30em" height="25em">
+                            Hello, {{ request.session.username }}
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      {% if request.session.role == 'administrator' %}
+                          <li><a href="{% url 'utama:administrator_detail' pk=request.session.role_pk %}">Profil</a></li>
+                      {% elif request.session.role == 'rumah_sakit' %}
+                          <li><a href="{% url 'rumah_sakit:rumah_sakit_detail' pk=request.session.role_pk %}">Profil</a></li>
+                      {% elif request.session.role == 'pengunjung' %}
+                          <li><a href="{% url 'pengunjung:pengunjung_detail' pk=request.session.role_pk %}">Profil</a></li>
+                      {% elif request.session.role == 'asuransi' %}
+                          <li><a href="{% url 'asuransi:asuransi_detail' pk=request.session.role_pk %}">Profil</a></li>
+                      {% endif %}
+                      <li><a href={% url 'utama:logout' %}><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    </header>
+
+     <div class="jumbotron text-center">
+        <h1>Hospital Review .Co</h1>
+        <p>Cari dan Review Rumah Sakit Pilihan Anda</p>
+        <form class="form-inline" method="get" action="{% url 'utama:pencarian_list' %}" name="form_pencarian">
+            <input type="hidden" name="q" value="">
+            <select class="form-control" name="search_select" id="search_select">
+                <option value="asuransi">Asuransi</option>
+                <option value="rumah_sakit">Rumah Sakit</option>
+                <option value="penyakit">Penyakit</option>
+                <option value="lokasi">Lokasi</option>
+            </select>
+            <input type="text" name="data" id="data" class="form-control" size="50" placeholder="Search">
+            <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-search"></span> Search</button>
+        </form>
+     </div>
+
+    {% block body_block %}
+
+    {% endblock %}
+    
+     <div class="container-fluid text-center" style="background-color:#baf8ff">
+      <h2>SERVICES</h2>
+      <h4>What we offer</h4>
+      <br>
+      <div class="row">
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-off"></span>
+          <h4>KEBERSAMAAN</h4>
+          <p>Kebersamaan dalam membantu..</p>
+        </div>
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-heart"></span>
+          <h4>KASIH</h4>
+          <p>Saling mengasihi dalam informasi..</p>
+        </div>
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-search"></span>
+          <h4>PENCARIAN</h4>
+          <p>Mempermudah pencarian rumah sakit..</p>
+        </div>
+        </div>
+        <br><br>
+      <div class="row">
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-plus"></span>
+          <h4>RUMAH SAKIT</h4>
+          <p>Rumah sakit terbaik untuk anda..</p>
+        </div>
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-certificate"></span>
+          <h4>KEPERCAYAAN</h4>
+          <p>Memberikan kepercayaan bagi cutomer..</p>
+        </div>
+        <div class="col-sm-4">
+          <span class="glyphicon glyphicon-wrench"></span>
+          <h4>BERKERJA KERAS</h4>
+          <p>Berkerja keras dalam setiap langkah..</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid bg-grey"style="background-color: #a6e1ec">
+          <h2 class="text-center">CONTACT</h2>
+          <div class="row">
+            <div class="col-sm-5">
+              <p>Contact us and we'll get back to you within 24 hours.</p>
+              <p><span class="glyphicon glyphicon-map-marker"></span> Laguboti, Sitoluama, Sumatra Utara,Indonesia</p>
+              <p><span class="glyphicon glyphicon-phone"></span> +62 82272574594</p>
+              <p><span class="glyphicon glyphicon-envelope"></span> reviewer@hospitalreview.co</p>
+            </div>
+          </div>
+    </div>
+
+
+     <!-- Set height and width with CSS -->
+    <div id="googleMap" style="height:400px;width:100%;"></div>
+
+    <!-- Add Google Maps -->
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script>
+    var myCenter = new google.maps.LatLng(2.3856798, 99.1458446);
+
+    function initialize() {
+    var mapProp = {
+    center:myCenter,
+    zoom:12,
+    scrollwheel:false,
+    draggable:false,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+    };
+
+    var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+    var marker = new google.maps.Marker({
+    position:myCenter,
+    });
+
+    marker.setMap(map);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+    <footer class="container-fluid text-center">
+      <a href="#myPage" title="To Top">
+        <span class="glyphicon glyphicon-chevron-up"></span>
+      </a>
+      <p>Bootstrap Theme Made By <a href="../index.html" title="Visit w3schools">www.w3schools.com</a></p>
+{#        <script src="{% static 'ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js' %}"></script>#}
+        <script src="{% static 'maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js' %}"></script>
+    </footer>
+
+</body>
+
+</html>

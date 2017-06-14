@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+    <div class="row">
+            <div class="col-lg-8">
+                <h2>List Hubungan Rumah Sakit-Asuransi Request</h2>
+            </div>
+        </div>
+        <hr/>
+
+        <h3>Hubungan Request</h3>
+        <hr/>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Nama Asuransi</th>
+                    <th>Nama Rumah Sakit</th>
+                    <th>Dokumen</th>
+                    <th>Validasi Rumah Sakit</th>
+                    <th>Validasi Administrator</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for foo in hubungan_rumah_sakit_asuransis %}
+                    <tr>
+                        <td><a href="{% url 'asuransi:hubungan_rumah_sakit_asuransi_detail' pk=foo.pk %}">{{ foo.asuransi.nama }}</a></td>
+                        <td>{{ foo.rumah_sakit }}</td>
+                        <td><a href="{{ foo.dokumen.url }}">{{ foo.dokumen.name }}</a></td>
+                        <td>{{ foo.status_validasi_rumah_sakit }}</td>
+                        <td>{{ foo.status_validasi_administrator }}</td>
+                        <td>
+                            <div>
+                                <form action="{% url 'rumah_sakit:validated_hubungan_asuransi_by_rumah_sakit' %}">
+                                    <button class="btn btn-success" value="{{ foo.pk }}" name="submit">Validated</button>
+                                </form>
+                                <form action="{% url 'rumah_sakit:rejected_hubungan_asuransi_by_rumah_sakit' %}">
+                                    <button class="btn btn-danger" value="{{ foo.pk }}" name="submit">Rejected</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <br/>
+        <div class="text-center">
+        {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number  }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div>
+
+    </div>
+{% endblock %}

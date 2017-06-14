@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+
+    <h2>Hospital Pictures</h2>
+    <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <h4><img src="{% static 'source/images/hospitalreview/01.jpg' %}" alt="01" width="500em" height="250em"></h4>
+            <h4>"Memberikan Rekomendasi rumash sakit terbaik untuk anda!"<br><span style="font-style:normal;">Hospital Review.co</span></h4>
+        </div>
+        <div class="item">
+            <h4><img src="{% static 'source/images/hospitalreview/02.jpg' %}" alt="02" width="500em" height="250em"></h4>
+            <h4>"Berikan review terhadap rumah sakit yang telah anda kunjungi!"<br><span style="font-style:normal;">Hospital Review.co</span></h4>
+        </div>
+        <div class="item">
+            <h4><img src="{% static 'source/images/hospitalreview/03.jpg' %}" alt="03" width="500em" height="250em"></h4>
+            <h4>"Dapatkan review rumah sakit rumah sakit di sekitar anda!"<br><span style="font-style:normal;">Hospital Review.co</span></h4>
+        </div>
+      </div>
+
+      <!-- Left and right controls -->
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    <div class="container">
+        <br/>
+        <h2>Rumah Sakit Rekomendasi Untuk Anda : </h2>
+        <hr/>
+    {% for rumah_sakit in rumah_sakits %}
+        <div class="container-fluid bg-grey">
+          <div class="row">
+            <div class="col-sm-4"><img src="{{ rumah_sakit.foto_profil.url }}" alt="Picture Not Available" width="225em" height="200em" class="img-thumbnail">
+            </div>
+            <div class="col-sm-8">
+              <a href="{% url 'rumah_sakit:rumah_sakit_detail' pk=rumah_sakit.pk %}"><h2>{{ rumah_sakit.nama }}</h2></a>
+              <h4><strong>NOMOR TELEPON : </strong> {{ rumah_sakit.nomor_telepon }}</h4>
+              <p><strong>ALAMAT : </strong> {{ rumah_sakit.kelurahan }}, kecamatan {{ rumah_sakit.kecamatan }}, kabupaten {{ rumah_sakit.kabupaten_kota }}, provinsi {{ rumah_sakit.provinsi }}</p>
+            </div>
+          </div>
+        </div>
+        <br/>
+        <hr/>
+        <br/>
+    {% endfor %}
+    <br/>
+        <div class="text-center">
+        {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number  }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

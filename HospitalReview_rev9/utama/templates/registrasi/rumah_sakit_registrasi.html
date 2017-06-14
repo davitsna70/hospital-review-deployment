@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{#{% load crispy_forms_tags %}#}
+{% load widget_tweaks  %}
+{% block body_block %}
+    <div class="container">
+        <h2>Registrasi Form</h2>
+        <ul class="nav nav-tabs">
+            <li><a href="{% url 'utama:pengunjung_registrasi' %}">Pengunjung</a></li>
+            <li class="active"><a href="{% url 'utama:rumah_sakit_registrasi' %}">Rumah Sakit</a></li>
+            <li><a href="{% url 'utama:asuransi_registrasi' %}">Asuransi</a></li>
+        </ul>
+
+        <h3> Register Rumah Sakit</h3>
+        <hr/>
+        <form enctype="multipart/form-data" action="{% url 'utama:rumah_sakit_registrasi' %}" role="form" method="post">
+            {% csrf_token %}
+{#            {{ user_form.as_p }}#}
+{#            {{ rumah_sakit_form.as_p }}#}
+            {% for field in user_form %}
+                <div class="form-group">
+                    <label for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field | add_class:'form-control' }}
+                </div>
+            {% endfor %}
+            {% for field in rumah_sakit_form %}
+                <div class="form-group">
+                    <label for="{{ field.name }}">{{ field.label }}</label>
+                    {{ field | add_class:'form-control' }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-default">Register</button>
+        </form>
+        <br/>
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+        <h2>Spesialis</h2>
+        <hr/>
+        <h3>{{ spesialis_detail.jenis_spesialis }}</h3>
+        <div class="row">
+            <div class="col-lg-6">
+                <p>Deskripsi : {{ spesialis_detail.deskripsi }}</p>
+             </div>
+        </div>
+        {% if request.session.role == 'administrator' or request.session.role == 'rumah_sakit' %}
+            <p>
+                <a class="btn btn-warning" href="{% url 'rumah_sakit:spesialis_update' pk=spesialis_detail.pk %}">Update</a>
+                {% if request.session.role == 'administrator' %}
+                    <a class="btn btn-danger" href="{% url 'rumah_sakit:spesialis_delete' pk=spesialis_detail.pk %}">Delete</a>
+                {% endif %}
+            </p>
+        {% endif %}
+        <hr/>
+
+        <br/>
+
+		<h3>Penyakit Terkait</h3>
+        <hr/>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nama Penyakit</th>
+                    <th>Gejala</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for penyakit in spesialis_detail.penyakits.all %}
+                    <tr>
+                        <td>{{ penyakit.nama }}</td>
+                        <td>{{ penyakit.gejala }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+        <h2>Asuransi</h2>
+        <hr/>
+        <h3>{{ asuransi_detail.nama }}</h3>
+        <div class="row">
+            <div class="col-lg-5">
+                <img src="{{ asuransi_detail.foto_profil.url }}" alt="Picture Not Available" width="500em" height="500em" class="img-thumbnail">
+            </div>
+            <div class="col-lg-6">
+                <p>Nama Asuransi : {{ asuransi_detail.nama }}</p>
+                <p>Nomor Telepon : {{ asuransi_detail.nomor_telepon }}</p>
+                <p>Url Website : {{ asuransi_detail.url_website }}</p>
+                <p>Status  Validasi : {{ asuransi_detail.status_validasi }}</p>
+                <p>Dokumen Terkait : <a href="{{ asuransi_detail.dokumen.url }}">{{ asuransi_detail.dokumen.name }}</a></p>
+             </div>
+        </div>
+        <hr/>
+        {% if request.session.role == 'administrator' or request.session.role == 'asuransi' %}
+            <p>
+                <a class="btn btn-warning" href="{% url 'asuransi:asuransi_update' pk=asuransi_detail.pk %}">Update</a>
+                {% if request.session.role == 'administrator' %}
+                    <a class="btn btn-danger" href="{% url 'asuransi:asuransi_delete' pk=asuransi_detail.pk %}">Delete</a>
+                {% endif %}
+            </p>
+        {% endif %}
+        <br/>
+
+		<h3>Rumah Sakit Terkait</h3>
+        <hr/>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nama Rumah Sakit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hubungan_rumah_sakit_asuransi in asuransi_detail.hubungan_rumah_sakit_asuransis.all %}
+                    <tr>
+                        {% if hubungan_rumah_sakit_asuransi.status_validasi_rumah_sakit == 'validated' and hubungan_rumah_sakit_asuransi.status_validasi_asuransi == 'validated' %}
+                            <td>{{ hubungan_rumah_sakit_asuransi.rumah_sakit }}</td>
+                        {% endif %}
+{#                        <td>{{ hubungan_rumah_sakit_asuransi.rumah_sakit }}</td>#}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

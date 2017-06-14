@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load widget_tweaks  %}
+{% block body_block %}
+    <div class="container">
+        <h2>Kelolah Fasilitas Rumah Sakit</h2>
+        <hr/>
+        <div class="row">
+            <div class="col-lg-8">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+{#                    {% crispy form %}#}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.name }}">{{ field.label }}</label>
+                            {{ field | add_class:'form-control' }}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+            </div>
+            {% if request.session.role == 'administrator' %}
+                <div class="col-lg-4">
+                    <p>Jenis Fasilitas tidak terdaftar? lihat list jenis fasilias<br/>
+                        <a href="{% url 'rumah_sakit:jenis_fasilitas_list' %}"><button class="btn btn-default">List Jenis Fasilitas</button></a>
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <br/>
+{% endblock %}

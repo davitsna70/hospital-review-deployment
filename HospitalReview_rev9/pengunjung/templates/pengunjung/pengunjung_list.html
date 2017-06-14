@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+     <div class="row">
+            <div class="col-lg-8">
+                <h1>List Pengunjung</h1>
+            </div>
+            <div class="col-lg-4">
+                {% if request.session.role == 'administrator' %}
+                    <div class="navbar-right">
+                        <a href="{% url 'pengunjung:pengunjung_create' %}">
+                            <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Pengunjung</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <hr/>
+
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Nama Pengunjung</th>
+                    <th>Nomor Telepon</th>
+                    <th>Provinsi</th>
+                    <th>Kabupaten/Kota</th>
+                    <th>Kecamatan</th>
+                    <th>Kelurahan</th>
+                    <th>Kode Pos</th>
+                    {% if request.session.role == 'administrator'%}
+                        <th>Status Validasi</th>
+                        <th>Action</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for foo in pengunjungs %}
+                    <tr>
+                        <td><a href="detail/{{ foo.pk }}/">{{ foo.nama }}</a></td>
+                        <td>{{ foo.nomor_telepon }}</td>
+                        <td>{{ foo.provinsi }}</td>
+                        <td>{{ foo.kabupaten_kota }}</td>
+                        <td>{{ foo.kecamatan }}</td>
+                        <td>{{ foo.kelurahan }}</td>
+                        <td>{{ foo.kode_pos }}</td>
+                        {% if request.session.role == 'administrator'%}
+                            <td>
+                                {{ foo.status_validasi }}
+                            </td>
+                            {% if foo.status_validasi == 'request' and request.session.role == 'administrator'%}
+                                <td>
+                                    <a href="{% url 'utama:pengunjung_rejected_and_validated' %}?submit={{ foo.pk }}&status=validated">
+                                        <button class="btn btn-success">Validated</button>
+                                    </a>
+                                    <a href="{% url 'utama:pengunjung_rejected_and_validated' %}?submit={{ foo.pk }}&status=rejected">
+                                        <button class="btn btn-danger">Rejected</button>
+                                    </a>
+                                </td>
+                            {% else %}
+                                <td>
+                                    No Action Available
+                                </td>
+                            {% endif %}
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    <br/>
+        <div class="text-center">
+        {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number  }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

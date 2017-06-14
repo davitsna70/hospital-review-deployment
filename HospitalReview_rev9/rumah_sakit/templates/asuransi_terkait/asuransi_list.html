@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>List Asuransi Terkait</h2>
+            </div>
+        </div>
+        <hr/>
+
+        <h3>List Hubungan</h3>
+        <hr/>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nama Asuransi</th>
+                    <th>Url Website</th>
+                    <th>Nomor Telepon</th>
+                    <th>Dokumen</th>
+                    <th>Status Validasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for foo in asuransis %}
+                    <tr>
+                        <td><a href="{% url 'asuransi:hubungan_rumah_sakit_asuransi_detail' pk=foo.pk %}">{{ foo.nama }}</a></td>
+                        <th>{{ foo.url_website }}</th>
+                        <th>{{ foo.nomor_telepon }}</th>
+                        <td><a href="{{ foo.dokumen.url }}">{{ foo.dokumen.name }}</a></td>
+                        <td>{{ foo.status_validasi }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <br/>
+        <div class="text-center">
+        {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number  }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div>
+    </div>
+    <br/>
+{% endblock %}

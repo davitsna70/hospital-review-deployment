@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="container">
+        <h2>Hubungan Rumah Sakit Asuransi</h2>
+        <hr/>
+        <p>Nama Asuransi : {{ hubungan_rumah_sakit_asuransi_detail.asuransi.nama }}</p>
+        <p>Nama Rumah Sakit : {{ hubungan_rumah_sakit_asuransi_detail.rumah_sakit.nama }}</p>
+        <p>Dokumen Hubungan Rumah Sakit : <a href="{{ hubungan_rumah_sakit_asuransi_detail.dokumen.url }}">
+            {{ hubungan_rumah_sakit_asuransi_detail.dokumen.name }}</a></p>
+        <p>Status Validasi Rumah Sakit : {{ hubungan_rumah_sakit_asuransi_detail.status_validasi_rumah_sakit }}</p>
+        <p>Status Validasi Administrator : {{ hubungan_rumah_sakit_asuransi_detail.status_validasi_administrator }}</p>
+        <p>
+            <a class="btn btn-warning" href="{% url 'asuransi:hubungan_rumah_sakit_asuransi_update' pk=hubungan_rumah_sakit_asuransi_detail.pk %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'asuransi:hubungan_rumah_sakit_asuransi_delete' pk=hubungan_rumah_sakit_asuransi_detail.pk %}">Delete</a>
+        </p>
+    </div>
+{% endblock %}

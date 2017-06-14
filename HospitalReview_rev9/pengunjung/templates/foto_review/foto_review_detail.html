@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="container">
+    <h2>Foto Review</h2>
+        <hr/>
+        <p>Pengujung : {{ review_detail.review.pengunjung }}</p>
+        <p>Rumah Sakit : {{ review_detail.review.rumah_sakit.nama }}</p>
+        <p></p>
+        <img src="{{ review_detail.foto_review.url }}" alt="" class="img-thumbnail">
+        <p>
+            <a class="btn btn-warning" href="{% url 'pengunjung:foto_review_update' pk=review_detail.pk %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'pengunjung:foto_review_delete' pk=review_detail.pk %}">Delete</a>
+        </p>
+    </div>
+{% endblock %}

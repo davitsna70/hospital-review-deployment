@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+    <h1>Delete {{ review.pengunjung.nama}}?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="delete">
+        <a href="{% url 'pengunjung:review_detail' pk=review.pk %}" class="btn btn-default">Cancel</a>
+    </form>
+    </div>
+{% endblock %}

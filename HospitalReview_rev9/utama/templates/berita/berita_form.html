@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load widget_tweaks  %}
+{% block body_block %}
+    <div class="container">
+        <h2>Kelolah Data Berita</h2>
+        <hr/>
+        <div class="row">
+            <div class="col-lg-8">
+                <form enctype="multipart/form-data" method="post" action="{% url 'utama:create' %}">
+                    {% csrf_token %}
+{#                    {{ form.as_p }}#}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.name }}">{{ field.label }}</label>
+                            {{ field | add_class:'form-control' }}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+            </div>
+            <br/>
+        </div>
+        <br/>
+    </div>
+
+{% endblock %}

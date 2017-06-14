@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+        <h2>Delete Berita {{ berita.judul }}?</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="delete">
+            <a href="{% url 'utama:detail' pk=berita.pk %}" class="btn btn-default">Cancel</a>
+        </form>
+        <hr/>
+    </div>
+    <br/>
+{% endblock %}

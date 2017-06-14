@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="container">
+    <h2>Berita Selengkapnya : </h2>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-8">
+        <h3>{{ berita_detail.judul }}</h3>
+        <p>{{ berita_detail.waktu }}<p>
+        <img src="{{ berita_detail.foto_berita.url  }}" alt="pict not available" width="400em" height="250em" class="img-thumbnail">
+        <p>{{ berita_detail.isi }}</p>
+            {% if request.session.role == 'administrator' %}
+            <p>
+                <a class="btn btn-warning" href="{% url 'utama:update' pk=berita_detail.pk %}">Update</a>
+                <a class="btn btn-danger" href="{% url 'utama:delete' pk=berita_detail.pk %}">Delete</a>
+            </p>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+{% endblock %}

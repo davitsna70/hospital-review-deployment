@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <h2>Berita Terkini</h2>
+        </div>
+        <div class="col-lg-4">
+            {% if request.session.role == 'administrator' %}
+                <div class="navbar-right">
+                    <a href="{% url 'utama:create' %}">
+                        <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Berita</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr/>
+
+    {% for foo in beritas %}
+        <div class="row">
+            <a href="{% url 'utama:detail' pk=foo.pk %}"><h3>{{ foo.judul }}</h3></a>
+            <p>{{ foo.waktu }}<p>
+            <div class="col-sm-5">
+                <img src="{{ foo.foto_berita.url  }}" alt="pict not available" width="400em" height="250em" class="img-thumbnail">
+                <br/>
+                <hr/>
+                <br/>
+            </div>
+            <div class="col-sm-7">
+                <p>{{ foo.isi }}</p>
+            </div>
+        </div>
+    {% endfor %}
+
+    <br/>
+        <div class="text-center">
+        {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number  }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1>List Jadwal Dokter</h1>
+            </div>
+            <div class="col-lg-4">
+                {% if request.session.role == 'administrator' or request.session.role == 'rumah_sakit' %}
+                    <div class="navbar-right">
+                        <a href="{% url 'rumah_sakit:jadwal_dokter_create' %}">
+                            <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Jadwal Dokter</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <hr/>
+
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Nama Dokter</th>
+                    <th>Senin</th>
+                    <th>Selasa</th>
+                    <th>Rabu</th>
+                    <th>Kamis</th>
+                    <th>Jumat</th>
+                    <th>Sabtu</th>
+                    <th>Minggu</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for foo in jadwal_dokters %}
+                    <tr>
+                        <td><a href="{% url 'rumah_sakit:jadwal_dokter_detail' pk=foo.pk %}">{{ foo.dokter.nama }}</a></td>
+                        <td>{{ foo.senin_masuk }} - {{ foo.senin_keluar }}</td>
+                        <td>{{ foo.selasa_masuk}} - {{ foo.selasa_keluar }}</td>
+                        <td>{{ foo.rabu_masuk }} - {{ foo.rabu_keluar}}</td>
+                        <td>{{ foo.kamis_masuk }} - {{ foo.kamis_keluar }}</td>
+                        <td>{{ foo.jumat_masuk }} - {{ foo.jumat_keluar }}</td>
+                        <td>{{ foo.sabtu_masuk }} - {{ foo.sabtu_keluar }}</td>
+                        <td>{{ foo.minggu_masuk }} - {{ foo.minggu_keluar }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br/>
+        <div class="text-center">
+        {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number  }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div>
+    </div>
+    <br/>
+{% endblock %}

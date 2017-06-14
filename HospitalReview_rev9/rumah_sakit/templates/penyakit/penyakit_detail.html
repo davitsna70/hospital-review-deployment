@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="container">
+        <h2>Penyakit</h2>
+        <p>Nama : {{ penyakit_detail.nama }}</p>
+        <p>Gejala : {{ penyakit_detail.gejala }}</p>
+        <p>Spesialis : {{ penyakit_detail.spesialis.jenis_spesialis }}</p>
+        <p>
+            <a class="btn btn-warning" href="{% url 'rumah_sakit:penyakit_update' pk=penyakit_detail.pk %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'rumah_sakit:penyakit_delete' pk=penyakit_detail.pk %}">Delete</a>
+        </p>
+    </div>
+{% endblock %}

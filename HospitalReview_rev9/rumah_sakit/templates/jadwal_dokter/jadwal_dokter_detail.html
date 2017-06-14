@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="container">
+        <h2>Jadwal Dokter</h2>
+        <hr/>
+        <p>Nama Dokter : {{ jadwal_dokter_detail.dokter.nama }}</p>
+        <p>Senin : {{ jadwal_dokter_detail.senin_masuk }} - {{ jadwal_dokter_detail.senin_keluar }}</p>
+        <p>Selasa : {{ jadwal_dokter_detail.selasa_masuk }} - {{ jadwal_dokter_detail.selasa_keluar }}</p>
+        <p>Rabu : {{ jadwal_dokter_detail.rabu_masuk}} - {{ jadwal_dokter_detail.rabu_keluar }}</p>
+        <p>Kamis : {{ jadwal_dokter_detail.kamis_masuk }} - {{ jadwal_dokter_detail.kamis_keluar }}</p>
+        <p>Jumat : {{ jadwal_dokter_detail.jumat_masuk }} - {{ jadwal_dokter_detail.jumat_keluar }}</p>
+        <p>Sabtu : {{ jadwal_dokter_detail.sabtu_masuk }} - {{ jadwal_dokter_detail.sabtu_keluar }}</p>
+        <p>Minggu : {{ jadwal_dokter_detail.minggu_masuk }} - {{ jadwal_dokter_detail.minggu_keluar }}</p>
+        <hr/>
+        <p>
+            <a class="btn btn-warning" href="{% url 'rumah_sakit:jadwal_dokter_update' pk=jadwal_dokter_detail.pk %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'rumah_sakit:jadwal_dokter_delete' pk=jadwal_dokter_detail.pk %}">Delete</a>
+        </p>
+    </div>
+{% endblock %}

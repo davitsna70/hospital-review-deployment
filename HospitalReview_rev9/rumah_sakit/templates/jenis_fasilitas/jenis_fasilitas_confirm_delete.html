@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+    <h1>Delete {{ jenis_fasilitas.fasilitas }}?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="delete">
+        <a href="{% url 'rumah_sakit:jenis_fasilitas_detail' pk=jenis_fasilitas.pk %}" class="btn btn-default">Cancel</a>
+    </form>
+    </div>
+{% endblock %}

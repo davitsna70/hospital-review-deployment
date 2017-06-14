@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+
+    <div class="container">
+        <h2>Rumah Sakit</h2>
+        <hr/>
+        <h3>{{ rumah_sakit_detail.nama }}</h3>
+        <div class="row">
+            <div class="col-lg-5">
+                <img src="{{ rumah_sakit_detail.foto_profil.url }}" alt="Picture Not Available" width="500em" height="500em" class="img-thumbnail">
+            </div>
+            <div class="col-lg-6">
+                <p>Email : {{ rumah_sakit_detail.akun.user.email }}</p>
+                <p>Website : {{ rumah_sakit_detail.url_website }}</p>
+                <p>Nomor Telepon : {{ rumah_sakit_detail.nomor_telepon }}</p>
+                <p>Fax : {{ rumah_sakit_detail.fax }}</p>
+                <p>Provinsi : {{ rumah_sakit_detail.provinsi }}</p>
+                <p>Kabupaten/Kota : {{ rumah_sakit_detail.kabupaten_kota }}</p>
+                <p>Kecamatan : {{ rumah_sakit_detail.kecamatan }}</p>
+                <p>Kelurahan : {{ rumah_sakit_detail.kelurahan }}</p>
+                <p>Kode Pos : {{ rumah_sakit_detail.kode_pos }}</p>
+                <p>Koordinat Lintang : {{ rumah_sakit_detail.lokasi_rumah_sakit_bujur }}</p>
+                <p>Koordinat Bujur : {{ rumah_sakit_detail.lokasi_rumah_sakit_lintang }}</p>
+                {% if request.session.role == 'administrator' %}
+                    <p>Dokumen Terkait : <a href="{{ rumah_sakit_detail.dokumen.url }}">{{ rumah_sakit_detail.dokumen.name }}</a></p>
+                {% endif %}
+{#                <p><a href="{% url 'rumah_sakit:lihat_peta_rumah_sakit' %}?id={{ rumah_sakit_detail.pk }}">Lihat Rumah Sakit Pada Peta</a>#}
+{#                </p>#}
+                <p><a href="https://www.google.co.id/maps/search/{{ rumah_sakit_detail }}">Lihat Lokasi</a></p>
+             </div>
+        </div>
+        <hr/>
+        {% if request.session.role == 'administrator' or request.session.role == 'rumah_sakit' %}
+            <p>
+                <a class="btn btn-warning" href="{% url 'rumah_sakit:rumah_sakit_update' pk=rumah_sakit_detail.pk %}">Update</a>
+                {% if request.session.role == 'administrator' %}
+                    <a class="btn btn-danger" href="{% url 'rumah_sakit:rumah_sakit_delete' pk=rumah_sakit_detail.pk %}">Delete</a>
+                {% endif %}
+            </p>
+        {% endif %}
+        <br/>
+
+        <h3>Foto Rumah Sakit</h3>
+        <hr/>
+        <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+          </ol>
+
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner" role="listbox">
+            {% for foto in rumah_sakit_detail.foto_rumah_sakits.all %}
+                <div class="item active">
+                    <h4><img src="{{ foto.foto_rumah_sakit.url }}" alt="01" width="500em" height="250em"></h4>
+                    <h4><span style="font-style:normal;">{{ rumah_sakit_detail.nama }}</span></h4>
+                </div>
+                <div class="item">
+                    <h4><img src="{{ foto.foto_rumah_sakit.url }}" alt="01" width="500em" height="250em"></h4>
+                    <h4><span style="font-style:normal;">{{ rumah_sakit_detail.nama }}</span></h4>
+                </div>
+            {% endfor %}
+          </div>
+
+          <!-- Left and right controls -->
+          <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+        <br/>
+
+        <h3>Fasilitas Rumah Sakit</h3>
+        <hr/>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nama Fasilitas</th>
+                    <th>Jenis Fasilitas</th>
+                    <th>Jumlah Fasilitas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fasilitas in rumah_sakit_detail.fasilitas_rumah_sakits.all %}
+                    <tr>
+                        <td>{{ fasilitas.sub_fasilitas }}</td>
+                        <td>{{ fasilitas.jenis_fasilitas.fasilitas }}</td>
+                        <td>{{ fasilitas.jumlah }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br/>
+        <h3>Dokter Spesialis</h3>
+        <hr/>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nama Dokter</th>
+                    <th>Spesialis</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dokter in rumah_sakit_detail.dokters.all %}
+                    <tr>
+                        <td>{{ dokter.nama }}</td>
+                        <td>{{ dokter.spesialis.jenis_spesialis }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br/>
+        <h3>Asuransi Yang Terkait</h3>
+        <hr/>
+
+        <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>URL Website</th>
+                        <th>Nomor Telepon</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hubungan_rumah_sakit_asuransi in rumah_sakit_detail.hubungan_rumah_sakit_asuransis.all %}
+                        {% if hubungan_rumah_sakit_asuransi.status_validasi_rumah_sakit == 'validated' and hubungan_rumah_sakit_asuransi.status_validasi_administrator == 'validated' %}
+                            <tr>
+                                <td>
+                                    {{ hubungan_rumah_sakit_asuransi.asuransi.nama }}
+                                </td>
+                                <td>
+                                    {{ hubungan_rumah_sakit_asuransi.asuransi.url_website }}
+                                </td>
+                                <td>
+                                    {{ hubungan_rumah_sakit_asuransi.asuransi.nomor_telepon }}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+        </table>
+        <hr/>
+        <br/>
+        <h3>Review Mengenai Rumah Sakit</h3>
+        <hr/>
+        <div class="panel-group" id="accordion">
+            {% for review in rumah_sakit_detail.reviews.all %}
+                {% if review.status_validasi == 'validated' %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                            {{ review.pengunjung.nama }}</a>
+                          </h4>
+                        </div>
+                        <div id="collapse1" class="panel-collapse collapse in">
+                          <div class="panel-body">
+                              <p>Rating : {{ review.rating }}</p>
+                              <p>review : <br/>
+                                {{ review.isi_review }}
+                              </p>
+                          </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if request.session.role == 'pengunjung' %}
+            <form action="{% url 'pengunjung:review_create' %}" method="get">
+                <input type="hidden" name="data" value="{{ rumah_sakit_detail.pk }}">
+                <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Buat Review</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

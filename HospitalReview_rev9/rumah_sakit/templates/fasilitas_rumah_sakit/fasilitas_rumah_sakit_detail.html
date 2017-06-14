@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="container">
+        <h2>Fsilitas Rumah Sakit</h2>
+        <hr/>
+        <p>Rumah Sakit : {{ fasilitas_rumah_sakit_detail.rumah_sakit }}</p>
+        <p>Jenis Fasilitas Fasilitas : {{ fasilitas_rumah_sakit_detail.jenis_fasilitas.fasilitas }}</p>
+        <p>Jumlah : {{ fasilitas_rumah_sakit_detail.jumlah }}</p>
+        <p>Deskripsi : {{ fasilitas_rumah_sakit_detail.deskripsi }}</p>
+
+        <p>
+            <a class="btn btn-warning" href="{% url 'rumah_sakit:fasilitas_rumah_sakit_update' pk=fasilitas_rumah_sakit_detail.pk %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'rumah_sakit:fasilitas_rumah_sakit_delete' pk=fasilitas_rumah_sakit_detail.pk %}">Delete</a>
+        </p>
+    </div>
+{% endblock %}

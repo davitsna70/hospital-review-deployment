@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+        <h2>List Pencarian Rumah Sakit</h2>
+        <h3>Pencarian Berdasarkan : {{ request.GET.search_select }} dengan value = "{{ request.GET.data }}"</h3>
+        <p>Terdapat {{ data_pencarian.count }} hasil pencarian...</p>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>
+                        Nama Rumah Sakit
+                    </th>
+                    <th>
+                        Url
+                    </th>
+                    <th>
+                        Nomor Telepon
+                    </th>
+                    <th>
+                        Alamat
+                    </th>
+                    <th>
+                        Koordinat Lintang
+                    </th>
+                    <th>
+                        Koordinat Bujur
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for data in data_pencarian %}
+                <tr>
+                    <td>
+                        <a href="{% url 'rumah_sakit:rumah_sakit_detail' pk=data.pk %}">{{ data.nama }}</a>
+                    </td>
+                    <td>
+                        {{ data.url_website }}
+                    </td>
+                    <td>
+                        {{ data.nomor_telepon }}
+                    </td>
+                    <td>
+                        {{ data.kelurahan }}, kecamatan {{ data.kecamatan }}, kabupaten {{ data.kabupaten_kota }}, provinsi {{ data.provinsi }}
+                    </td>
+                    <td>
+                        {{ data.lokasi_rumah_sakit_lintang }}
+                    </td>
+                    <td>
+                        {{ data.lokasi_rumah_sakit_bujur }}
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <br/>
+        <div class="text-center">
+        {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number  }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

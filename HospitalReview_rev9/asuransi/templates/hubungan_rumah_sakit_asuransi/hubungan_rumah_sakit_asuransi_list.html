@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+     <div class="row">
+            <div class="col-lg-8">
+                <h1>List Hubungan Rumah Sakit-Asuransi</h1>
+            </div>
+            <div class="col-lg-4">
+                {% if request.session.role == 'administrator' or request.session.role == 'asuransi' %}
+                    <div class="navbar-right">
+                        <a href="{% url 'asuransi:hubungan_rumah_sakit_asuransi_create' %}">
+                            <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Hubungan Rumah Sakit-Asuransi</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <hr/>
+
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Asuransi</th>
+                    <th>Rumah Sakit</th>
+                    <th>Validasi Rumah Sakit</th>
+                    <th>Validasi Administrator</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for foo in hubungan_rumah_sakit_asuransis %}
+                    <tr>
+                        <td><a href="detail/{{ foo.pk }}">{{ foo.asuransi.nama }}</a></td>
+                        <td>{{ foo.rumah_sakit.nama }}</td>
+                        <td>{{ foo.status_validasi_rumah_sakit }}</td>
+                        <td>{{ foo.status_validasi_administrator }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br/>
+        <div class="text-center">
+        {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number  }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

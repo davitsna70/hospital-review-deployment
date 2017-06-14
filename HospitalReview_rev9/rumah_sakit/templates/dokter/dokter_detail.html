@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Dokter</h2>
+            </div>
+            <div class="col-lg-4">
+                <div class="navbar-right">
+                    <a href="{% url 'rumah_sakit:jadwal_dokter_create' %}?id={{ dokter_detail.pk }}">
+                        <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Jadwal Dokter</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <p>Nama : {{ dokter_detail.nama }}</p>
+        <p>Jenis Spesialis : {{ dokter_detail.spesialis.jenis_spesialis }}</p>
+        <p>Email : {{ dokter_detail.email }}</p>
+        <p>Nomor Telepon : {{ dokter_detail.nomor_telepon }}</p>
+        <hr/>
+        <p>
+            <a class="btn btn-warning" href="{% url 'rumah_sakit:dokter_update' pk=dokter_detail.pk %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'rumah_sakit:dokter_delete' pk=dokter_detail.pk %}">Delete</a>
+        </p>
+    </div>
+{% endblock %}

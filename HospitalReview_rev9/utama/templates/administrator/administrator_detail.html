@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+        <h2>Administrator</h2>
+        <hr/>
+        <h3>{{ administrator_detail.nama }}</h3>
+        <div class="row">
+            <div class="col-lg-5">
+                <img src="{{ administrator_detail.foto_profil.url }}" alt="Picture Not Available" width="500em" height="500em" class="img-thumbnail">
+            </div>
+            <div class="col-lg-6">
+                <p>Username : {{ administrator_detail.akun.user.username }}</p>
+                <p>Nama : {{ administrator_detail.nama }}</p>
+                <p>Email : {{ administrator_detail.akun.user.email}}</p>
+                <p>Nomor Telepon : {{ administrator_detail.nomor_telepon }}</p>
+                <p>Alamat : {{ administrator_detail.alamat }}</p>
+             </div>
+        </div>
+        <hr/>
+        {% if request.session.role == 'administrator' %}
+            <p>
+                <a class="btn btn-warning" href="{% url 'utama:update' pk=administrator_detail.pk %}">Update Akun</a>
+                {% if request.session.role == 'administrator' %}
+{#                    <a class="btn btn-danger" href="{% url 'utama:delete' pk=administrator_detail.pk %}">Delete Akun</a>#}
+                {% endif %}
+            </p>
+        {% endif %}
+        <br/>
+
+		<h3>Berita Yang Di Tulis</h3>
+        <hr/>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Judul Berita</th>
+                    <th>Waktu</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for berita in administrator_detail.beritas.all %}
+                    <tr>
+                        <td>{{ berita.judul }}</td>
+                        <td>{{ berita.waktu }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

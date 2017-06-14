@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load widget_tweaks  %}
+{% block body_block %}
+    <div class="container">
+    <h2>Kelolah Spesialis</h2>
+    <hr/>
+    <div class="row">
+        <div class="col-lg-8">
+            <form method="post" enctype="multipart/form-data" >
+                {% csrf_token %}
+{#                {{ form.as_p }}#}
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.name }}">{{ field.label }}</label>
+                        {{ field | add_class:'form-control' }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+        <div class="col-lg-4">
+            {% if request.session.role == 'administrator' %}
+                <p>Tambahkan juga penyakit yang dapat diatasi spesialis untuk mempermudah pencarian terhadap rumah sakit...</p><br/>
+                <a href="{% url 'rumah_sakit:penyakit_list' %}"><button class="btn btn-default">List Penyakit</button></a>
+            {% endif %}
+        </div>
+    </div>
+    </div>
+    <br/>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    <div class="container">
+        <h2>Pengunjung</h2>
+        <hr/>
+        <h3>{{ pengunjung_detail.nama }}</h3>
+
+        <div class="row">
+            <div class="col-lg-5">
+                <img src="{{ pengunjung_detail.foto_profil.url }}" alt="Picture Not Available" width="500em" height="500em" class="img-thumbnail">
+            </div>
+            <div class="col-lg-6">
+                <p>Nama Asuransi : {{ pengunjung_detail.nama }}</p>
+                <p>Nomor Telepon : {{ pengunjung_detail.nomor_telepon }}</p>
+                <p>Golongan Darah : {{ pengunjung_detail.golongan_darah }}</p>
+                <p>Provinsi : {{ pengunjung_detail.provinsi }}</p>
+                <p>Kabupaten/Kota : {{ pengunjung_detail.kabupaten_kota }}</p>
+                <p>Kecamatan : {{ pengunjung_detail.kecamatan }}</p>
+                <p>Kelurahan : {{ pengunjung_detail.kelurahan }}</p>
+                <p>Kode Pos : {{ pengunjung_detail.kode_pos }}</p>
+             </div>
+        </div>
+        <hr/>
+        {% if request.session.role == 'administrator' or request.session.role == 'pengunjung' %}
+            <p>
+                <a class="btn btn-warning" href="{% url 'pengunjung:pengunjung_update' pk=pengunjung_detail.pk %}">Update</a>
+                {% if request.session.role == 'administrator' %}
+                    <a class="btn btn-danger" href="{% url 'pengunjung:pengunjung_delete' pk=pengunjung_detail.pk %}">Delete</a>
+                {% endif %}
+            </p>
+        {% endif %}
+        <br/>
+
+    </div>
+{% endblock %}

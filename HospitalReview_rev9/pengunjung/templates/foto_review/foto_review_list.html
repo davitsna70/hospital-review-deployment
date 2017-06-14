@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <div class="container">
+     <div class="row">
+            <div class="col-lg-8">
+                <h1>List Foto Review</h1>
+            </div>
+            <div class="col-lg-4">
+                {% if request.session.role == 'administrator' %}
+                    <div class="navbar-right">
+                        <div class="navbar-right">
+                            <a href="{% url 'pengunjung:foto_review_create' %}">
+                                <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Foto Review</button>
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <hr/>
+
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Nama Pengunjung</th>
+                    <th>Nama Rumah</th>
+                    <th>Rating</th>
+                    <th>Foto</th>
+                    <th>Waktu Kirim</th>
+                    <th>Status Validasi Review</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for foo in foto_reviews %}
+                    <tr>
+                        <td><a href="detail/{{ foo.pk }}">{{ foo.review.pengunjung.nama }}</a></td>
+                        <td>{{ foo.review.rumah_sakit.nama }}</td>
+                        <td>{{ foo.review.rating }}</td>
+                        <td>{{ foo.foto_review }}</td>
+                        <td>{{ foo.review.waktu_stamp }}</td>
+                        <td>{{ foo.review.status_validasi }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br/>
+        <div class="text-center">
+        {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number  }}">&laquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+              {% if page_obj.number == i %}
+                <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+              {% else %}
+                <li><a href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+              <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}
